@@ -1,0 +1,1416 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Community Voice — Admin</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(130,90,255,.16), transparent 30%),
+        radial-gradient(circle at 90% 90%, rgba(0,220,190,.10), transparent 30%),
+        #08090f;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+    }
+
+    /* LOGIN */
+
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+    }
+
+    .login-card {
+      width: min(430px, 100%);
+      background: rgba(20,21,32,.9);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 25px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 30px 100px rgba(0,0,0,.45);
+    }
+
+    .login-logo {
+      letter-spacing: 5px;
+      font-size: 13px;
+      opacity: .7;
+      margin-bottom: 25px;
+    }
+
+    .login-card h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .login-card p {
+      color: #9699a7;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+
+      width: 100%;
+      padding: 15px;
+
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+
+      border-radius: 12px;
+
+      color: white;
+      font-size: 15px;
+
+      outline: none;
+
+      margin-bottom: 12px;
+    }
+
+    input:focus {
+      border-color: #9d91ff;
+    }
+
+    .login-btn {
+
+      width: 100%;
+      padding: 16px;
+
+      border: none;
+      border-radius: 13px;
+
+      background: linear-gradient(90deg,#8d80ff,#62d8c7);
+
+      color: #08090f;
+
+      font-weight: 800;
+      cursor: pointer;
+
+      margin-top: 8px;
+    }
+
+    #loginError {
+      color: #ff7f91;
+      font-size: 13px;
+      margin-top: 15px;
+      display: none;
+    }
+
+
+    /* DASHBOARD */
+
+    #dashboard {
+      display: none;
+    }
+
+    header {
+
+      padding: 35px 0;
+
+      border-bottom:
+        1px solid rgba(255,255,255,.07);
+    }
+
+    .topbar {
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 20px;
+    }
+
+    .brand {
+
+      letter-spacing: 4px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    .title {
+
+      font-size: clamp(28px,5vw,45px);
+      margin-top: 8px;
+
+      background:
+        linear-gradient(90deg,#fff,#a89cff,#73e6d4);
+
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .logout-btn {
+
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+
+      color: white;
+
+      padding: 11px 16px;
+
+      border-radius: 10px;
+
+      cursor: pointer;
+    }
+
+
+    /* STATS */
+
+    .stats {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4,1fr);
+
+      gap: 15px;
+
+      margin: 30px 0;
+    }
+
+    .stat {
+
+      background: rgba(20,21,32,.82);
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      border-radius: 18px;
+
+      padding: 24px;
+    }
+
+    .stat-label {
+
+      color: #858896;
+      font-size: 12px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
+    }
+
+    .stat-number {
+
+      font-size: 32px;
+      font-weight: 800;
+
+      margin-top: 10px;
+    }
+
+
+    /* PANELS */
+
+    .grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(2,1fr);
+
+      gap: 18px;
+
+      margin-bottom: 25px;
+    }
+
+    .panel {
+
+      background: rgba(20,21,32,.82);
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      border-radius: 20px;
+
+      padding: 25px;
+    }
+
+    .panel h2 {
+
+      font-size: 18px;
+
+      margin-bottom: 20px;
+    }
+
+
+    /* RESULTS */
+
+    .result {
+
+      margin-bottom: 17px;
+    }
+
+    .result-head {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 7px;
+
+      font-size: 14px;
+    }
+
+    .result-head span:last-child {
+
+      color: #8fdfd1;
+      font-weight: bold;
+    }
+
+    .bar {
+
+      height: 9px;
+
+      background: rgba(255,255,255,.06);
+
+      border-radius: 20px;
+
+      overflow: hidden;
+    }
+
+    .bar-fill {
+
+      height: 100%;
+
+      width: 0%;
+
+      background:
+        linear-gradient(90deg,#8d80ff,#62d8c7);
+
+      border-radius: inherit;
+
+      transition:
+        width .8s ease;
+    }
+
+
+    /* FEEDBACK */
+
+    .feedback-list {
+
+      display: grid;
+
+      gap: 12px;
+    }
+
+    .feedback {
+
+      background:
+        rgba(255,255,255,.035);
+
+      border:
+        1px solid rgba(255,255,255,.06);
+
+      border-radius: 14px;
+
+      padding: 17px;
+
+      color: #d6d7de;
+
+      line-height: 1.6;
+    }
+
+    .feedback-date {
+
+      color: #777a88;
+
+      font-size: 11px;
+
+      margin-top: 8px;
+    }
+
+    .empty {
+
+      color: #777a88;
+
+      text-align: center;
+
+      padding: 25px;
+    }
+
+    .refresh {
+
+      margin-top: 10px;
+
+      color: #777a88;
+
+      font-size: 12px;
+    }
+
+
+    @media(max-width:850px) {
+
+      .stats {
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    @media(max-width:500px) {
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .login-card {
+        padding: 28px 20px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     LOGIN
+===================================== -->
+
+<section id="loginScreen">
+
+  <div class="login-card">
+
+    <div class="login-logo">
+      THE SELFVERSE
+    </div>
+
+    <h1>Community Voice</h1>
+
+    <p>
+      Private admin dashboard.<br>
+      Sign in to view community insights.
+    </p>
+
+    <input
+      type="email"
+      id="email"
+      placeholder="Admin email"
+      autocomplete="email"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+      autocomplete="current-password"
+    >
+
+    <button
+      class="login-btn"
+      id="loginBtn"
+    >
+      SIGN IN
+    </button>
+
+    <div id="loginError">
+      Incorrect email or password.
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================
+     DASHBOARD
+===================================== -->
+
+<section id="dashboard">
+
+  <header>
+
+    <div class="container">
+
+      <div class="topbar">
+
+        <div>
+
+          <div class="brand">
+            THE SELFVERSE · COMMUNITY VOICE
+          </div>
+
+          <div class="title">
+            Community Insights
+          </div>
+
+        </div>
+
+        <button
+          class="logout-btn"
+          id="logoutBtn"
+        >
+          LOG OUT
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <main class="container">
+
+
+    <!-- =================================
+         TOP STATS
+    ================================== -->
+
+    <section class="stats">
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Total Responses
+        </div>
+
+        <div
+          class="stat-number"
+          id="totalResponses"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Definitely Interested
+        </div>
+
+        <div
+          class="stat-number"
+          id="definitelyInterested"
+        >
+          0%
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Top Interest
+        </div>
+
+        <div
+          class="stat-number"
+          id="topInterest"
+          style="font-size:20px;"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Top Improvement
+        </div>
+
+        <div
+          class="stat-number"
+          id="topImprovement"
+          style="font-size:20px;"
+        >
+          —
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================
+         RESULTS
+    ================================== -->
+
+    <section class="grid">
+
+
+      <div class="panel">
+
+        <h2>
+          👀 Have People Heard About SELFVERSE?
+        </h2>
+
+        <div id="heardResults"></div>
+
+      </div>
+
+
+
+      <div class="panel">
+
+        <h2>
+          🧠 What Interests People?
+        </h2>
+
+        <div id="interestResults"></div>
+
+      </div>
+
+
+
+      <div class="panel">
+
+        <h2>
+          🔥 Would People Use SELFVERSE?
+        </h2>
+
+        <div id="useResults"></div>
+
+      </div>
+
+
+
+      <div class="panel">
+
+        <h2>
+          🚀 What Should We Improve?
+        </h2>
+
+        <div id="improvementResults"></div>
+
+      </div>
+
+
+
+      <div class="panel">
+
+        <h2>
+          🌱 What Should We Focus On?
+        </h2>
+
+        <div id="focusResults"></div>
+
+      </div>
+
+
+
+      <div class="panel">
+
+        <h2>
+          📊 Community Snapshot
+        </h2>
+
+        <div id="snapshotResults"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================
+         FEEDBACK
+    ================================== -->
+
+    <section class="panel">
+
+      <h2>
+        💬 What People Are Saying
+      </h2>
+
+      <div
+        class="feedback-list"
+        id="feedbackList"
+      ></div>
+
+      <div
+        class="refresh"
+        id="lastUpdated"
+      >
+        Loading...
+      </div>
+
+    </section>
+
+
+  </main>
+
+</section>
+
+
+
+<!-- =====================================
+     FIREBASE
+===================================== -->
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from
+  "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+
+
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  } from
+  "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+
+  import {
+    getFirestore,
+    collection,
+    getDocs,
+    query,
+    orderBy
+  } from
+  "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+
+  /* =================================
+     FIREBASE CONFIG
+  ================================= */
+
+  const firebaseConfig = {
+
+    apiKey:
+      "AIzaSyBdDoX-Eb6WADP9WTwwp_mix73xVxc2H9w",
+
+    authDomain:
+      "the-selfverse-community-voice.firebaseapp.com",
+
+    projectId:
+      "the-selfverse-community-voice",
+
+    storageBucket:
+      "the-selfverse-community-voice.firebasestorage.app",
+
+    messagingSenderId:
+      "394978342331",
+
+    appId:
+      "1:394978342331:web:df8f09b5ad49218a13009e"
+
+  };
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+  const db =
+    getFirestore(app);
+
+
+
+  /* =================================
+     ELEMENTS
+  ================================= */
+
+  const loginScreen =
+    document.getElementById("loginScreen");
+
+  const dashboard =
+    document.getElementById("dashboard");
+
+  const loginBtn =
+    document.getElementById("loginBtn");
+
+  const logoutBtn =
+    document.getElementById("logoutBtn");
+
+  const loginError =
+    document.getElementById("loginError");
+
+
+
+  /* =================================
+     LOGIN
+  ================================= */
+
+  loginBtn.addEventListener(
+    "click",
+    async () => {
+
+      const email =
+        document.getElementById("email")
+        .value.trim();
+
+      const password =
+        document.getElementById("password")
+        .value;
+
+
+      loginError.style.display =
+        "none";
+
+      loginBtn.disabled =
+        true;
+
+      loginBtn.textContent =
+        "SIGNING IN...";
+
+
+      try {
+
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+      }
+
+      catch(error) {
+
+        console.error(error);
+
+        loginError.textContent =
+          "Login failed. Check your email and password.";
+
+        loginError.style.display =
+          "block";
+
+        loginBtn.disabled =
+          false;
+
+        loginBtn.textContent =
+          "SIGN IN";
+
+      }
+
+    }
+  );
+
+
+
+  /* =================================
+     AUTH STATE
+  ================================= */
+
+  onAuthStateChanged(
+    auth,
+    async (user) => {
+
+      if(user) {
+
+        loginScreen.style.display =
+          "none";
+
+        dashboard.style.display =
+          "block";
+
+        await loadDashboard();
+
+      }
+
+      else {
+
+        loginScreen.style.display =
+          "flex";
+
+        dashboard.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+
+
+  /* =================================
+     LOGOUT
+  ================================= */
+
+  logoutBtn.addEventListener(
+    "click",
+    async () => {
+
+      await signOut(auth);
+
+    }
+  );
+
+
+
+  /* =================================
+     LOAD DATA
+  ================================= */
+
+  async function loadDashboard() {
+
+    try {
+
+      const responseQuery =
+        query(
+          collection(
+            db,
+            "communityResponses"
+          ),
+          orderBy(
+            "submittedAt",
+            "desc"
+          )
+        );
+
+
+      const snapshot =
+        await getDocs(
+          responseQuery
+        );
+
+
+      const responses =
+        snapshot.docs.map(
+          doc => ({
+            id: doc.id,
+            ...doc.data()
+          })
+        );
+
+
+      renderDashboard(
+        responses
+      );
+
+    }
+
+    catch(error) {
+
+      console.error(
+        "Dashboard error:",
+        error
+      );
+
+      alert(
+        "Unable to load community responses."
+      );
+
+    }
+
+  }
+
+
+
+  /* =================================
+     COUNT HELPER
+  ================================= */
+
+  function countValues(
+    responses,
+    field
+  ) {
+
+    const counts = {};
+
+    responses.forEach(
+      response => {
+
+        const value =
+          response[field];
+
+        if(!value) return;
+
+        counts[value] =
+          (counts[value] || 0) + 1;
+
+      }
+    );
+
+    return counts;
+
+  }
+
+
+
+  /* =================================
+     PERCENTAGE
+  ================================= */
+
+  function percentage(
+    value,
+    total
+  ) {
+
+    if(!total)
+      return 0;
+
+    return Math.round(
+      (value / total) * 100
+    );
+
+  }
+
+
+
+  /* =================================
+     RENDER RESULTS
+  ================================= */
+
+  function renderResults(
+    elementId,
+    counts,
+    total
+  ) {
+
+    const element =
+      document.getElementById(
+        elementId
+      );
+
+    element.innerHTML = "";
+
+
+    const sorted =
+      Object.entries(counts)
+      .sort(
+        (a,b) => b[1] - a[1]
+      );
+
+
+    if(!sorted.length) {
+
+      element.innerHTML =
+        `<div class="empty">
+          No responses yet.
+        </div>`;
+
+      return;
+
+    }
+
+
+    sorted.forEach(
+      ([label,count]) => {
+
+        const percent =
+          percentage(
+            count,
+            total
+          );
+
+
+        element.innerHTML += `
+
+          <div class="result">
+
+            <div class="result-head">
+
+              <span>
+                ${escapeHTML(label)}
+              </span>
+
+              <span>
+                ${percent}%
+              </span>
+
+            </div>
+
+            <div class="bar">
+
+              <div
+                class="bar-fill"
+                style="width:${percent}%"
+              ></div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    );
+
+  }
+
+
+
+  /* =================================
+     MAIN DASHBOARD
+  ================================= */
+
+  function renderDashboard(
+    responses
+  ) {
+
+    const total =
+      responses.length;
+
+
+    document.getElementById(
+      "totalResponses"
+    ).textContent =
+      total;
+
+
+    const useCounts =
+      countValues(
+        responses,
+        "wouldUse"
+      );
+
+
+    const interestCounts =
+      countValues(
+        responses,
+        "interest"
+      );
+
+
+    const improvementCounts =
+      countValues(
+        responses,
+        "improvement"
+      );
+
+
+    const heardCounts =
+      countValues(
+        responses,
+        "heardBefore"
+      );
+
+
+    const focusCounts =
+      countValues(
+        responses,
+        "focus"
+      );
+
+
+    renderResults(
+      "heardResults",
+      heardCounts,
+      total
+    );
+
+
+    renderResults(
+      "interestResults",
+      interestCounts,
+      total
+    );
+
+
+    renderResults(
+      "useResults",
+      useCounts,
+      total
+    );
+
+
+    renderResults(
+      "improvementResults",
+      improvementCounts,
+      total
+    );
+
+
+    renderResults(
+      "focusResults",
+      focusCounts,
+      total
+    );
+
+
+    /* DEFINITELY INTERESTED */
+
+    const definitely =
+      useCounts["Definitely"] || 0;
+
+
+    document.getElementById(
+      "definitelyInterested"
+    ).textContent =
+      percentage(
+        definitely,
+        total
+      ) + "%";
+
+
+    /* TOP INTEREST */
+
+    const topInterest =
+      getTopValue(
+        interestCounts
+      );
+
+
+    document.getElementById(
+      "topInterest"
+    ).textContent =
+      topInterest || "—";
+
+
+    /* TOP IMPROVEMENT */
+
+    const topImprovement =
+      getTopValue(
+        improvementCounts
+      );
+
+
+    document.getElementById(
+      "topImprovement"
+    ).textContent =
+      topImprovement || "—";
+
+
+    /* SNAPSHOT */
+
+    document.getElementById(
+      "snapshotResults"
+    ).innerHTML = `
+
+      <div class="result">
+
+        <div class="result-head">
+
+          <span>
+            Responses collected
+          </span>
+
+          <span>
+            ${total}
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="result">
+
+        <div class="result-head">
+
+          <span>
+            People definitely interested
+          </span>
+
+          <span>
+            ${percentage(
+              definitely,
+              total
+            )}%
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="result">
+
+        <div class="result-head">
+
+          <span>
+            Different interests
+          </span>
+
+          <span>
+            ${Object.keys(
+              interestCounts
+            ).length}
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="result">
+
+        <div class="result-head">
+
+          <span>
+            Written feedback
+          </span>
+
+          <span>
+            ${
+              responses.filter(
+                r =>
+                  r.feedback &&
+                  r.feedback.trim()
+              ).length
+            }
+          </span>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    /* FEEDBACK */
+
+    const feedbackList =
+      document.getElementById(
+        "feedbackList"
+      );
+
+
+    feedbackList.innerHTML =
+      "";
+
+
+    const feedbackResponses =
+      responses.filter(
+        response =>
+          response.feedback &&
+          response.feedback.trim()
+      );
+
+
+    if(!feedbackResponses.length) {
+
+      feedbackList.innerHTML =
+        `<div class="empty">
+          No written feedback yet.
+        </div>`;
+
+    }
+
+    else {
+
+      feedbackResponses
+      .slice(0,50)
+      .forEach(
+        response => {
+
+          let date = "";
+
+          if(
+            response.submittedAt &&
+            response.submittedAt.toDate
+          ) {
+
+            date =
+              response.submittedAt
+              .toDate()
+              .toLocaleString();
+
+          }
+
+
+          feedbackList.innerHTML += `
+
+            <div class="feedback">
+
+              "${escapeHTML(
+                response.feedback
+              )}"
+
+              <div class="feedback-date">
+                ${escapeHTML(date)}
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      );
+
+    }
+
+
+    document.getElementById(
+      "lastUpdated"
+    ).textContent =
+      "Dashboard loaded · " +
+      new Date().toLocaleTimeString();
+
+  }
+
+
+
+  /* =================================
+     TOP VALUE
+  ================================= */
+
+  function getTopValue(
+    counts
+  ) {
+
+    const entries =
+      Object.entries(counts);
+
+    if(!entries.length)
+      return "";
+
+    entries.sort(
+      (a,b) => b[1] - a[1]
+    );
+
+    return entries[0][0];
+
+  }
+
+
+
+  /* =================================
+     HTML ESCAPE
+  ================================= */
+
+  function escapeHTML(
+    value
+  ) {
+
+    return String(value)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+
+  }
+
+</script>
+
+</body>
+</html>
+```
